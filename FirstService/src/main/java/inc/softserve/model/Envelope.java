@@ -13,9 +13,9 @@ public class Envelope {
     private String to;
     private String subject;
     private String template;
-    private String state;
+    private EnvelopeState state;
 
-    public Envelope(User from, String to, String subject, String template, String state) {
+    public Envelope(User from, String to, String subject, String template, EnvelopeState state) {
         this.from = from;
         this.to = to;
         this.subject = subject;
@@ -28,7 +28,7 @@ public class Envelope {
         this.to = to;
         this.subject = subject;
         this.template = template;
-        this.state = "In progress";
+        this.state = EnvelopeState.IN_PROGRESS;
     }
 
     @JsonProperty
@@ -77,11 +77,11 @@ public class Envelope {
     }
 
     @JsonProperty
-    public String getState() {
+    public EnvelopeState getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(EnvelopeState state) {
         this.state = state;
     }
 }

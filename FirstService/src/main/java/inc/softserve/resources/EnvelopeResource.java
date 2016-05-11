@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import inc.softserve.dao.EnvelopeDao;
 import inc.softserve.dao.EnvelopeDaoImpl;
 import inc.softserve.model.Envelope;
+import inc.softserve.model.EnvelopeState;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -36,12 +37,12 @@ public class EnvelopeResource {
                                @Context HttpServletRequest request){
         Envelope envelope = new Envelope(username, to, subject, template);
         dao.saveOrUpdate(envelope);
-        String sendState = null;
+        EnvelopeState sendState = null;
         try {
             sendState = sendEnvelope(envelope);
         }catch(IOException e){
             e.printStackTrace();
-            sendState = "Not sent, due to error!";
+            sendState = EnvelopeState.ERROR;
         }
 
         if(!"In progress".equals(sendState)){
@@ -53,14 +54,14 @@ public class EnvelopeResource {
     }
 
     @GET
-    public String getEnvelopeStateById(@QueryParam("id") long id){
+    public EnvelopeState getEnvelopeStateById(@QueryParam("id") long id){
         Envelope envelope = dao.getById(id);
-        return "{\"state\":\""+envelope.getState()+"\"}";
+        return envelope.getState();
     }
 
-    private String sendEnvelope(Envelope envelope) throws IOException{
+    private EnvelopeState sendEnvelope(Envelope envelope) throws IOException{
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:7080").path("hello-world");
+        WebTarget target = client.target("http://localhost:7080").path("send");
         String envelopeJson = mapper.writeValueAsString(envelope);
 
         Response sendEnvResponse = target.request(MediaType.APPLICATION_JSON_TYPE)
@@ -68,6 +69,7 @@ public class EnvelopeResource {
 
         String responseAsString = sendEnvResponse.readEntity(String.class);
         JsonNode jsonNode = mapper.readValue(responseAsString,JsonNode.class);
-        return jsonNode.get("state").asText();
+        EnvelopeState state = EnvelopeState.getNameByCode(jsonNode.get("state").asText());
+        return state;
     }
 }
