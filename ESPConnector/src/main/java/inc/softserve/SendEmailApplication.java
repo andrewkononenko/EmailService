@@ -10,8 +10,6 @@ public class SendEmailApplication extends Application<SendEmailConfiguration> {
         new SendEmailApplication().run(args);
     }
 
-
-
     @Override
     public void initialize(Bootstrap<SendEmailConfiguration> bootstrap) {
         // nothing to do yet
