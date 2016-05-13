@@ -42,7 +42,7 @@ public class EnvelopeResource {
             sendState = EnvelopeState.ERROR;
         }
 
-        if(!"In progress".equals(sendState)){
+        if(!EnvelopeState.IN_PROGRESS.equals(sendState)){
             envelope.setState(sendState);
             dao.saveOrUpdate(envelope);
         }
