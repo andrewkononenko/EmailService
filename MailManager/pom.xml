@@ -63,15 +63,21 @@
     </dependency>
 
     <dependency>
-      <groupId>com.hubspot.dropwizard</groupId>
-      <artifactId>dropwizard-guice</artifactId>
-      <version>${dropwizard-guice.version}</version>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
     </dependency>
 
     <dependency>
       <groupId>inc.softserve</groupId>
       <artifactId>email-core</artifactId>
       <version>${email-core.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>2.19</version>
     </dependency>
   </dependencies>
 </project>

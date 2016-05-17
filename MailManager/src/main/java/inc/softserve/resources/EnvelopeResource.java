@@ -5,6 +5,7 @@ import inc.softserve.EmailServiceApplication;
 import inc.softserve.Envelope;
 import inc.softserve.EnvelopeState;
 import inc.softserve.common.EnvelopeTools;
+import inc.softserve.annotations.Timed;
 import inc.softserve.dao.EnvelopeDao;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ public class EnvelopeResource {
     }
 
     @POST
+    @Timed
     public long saveEnvelope(@QueryParam("Subject") String subject,
                                @QueryParam("To") String to,
                                @QueryParam("From") String username,
@@ -51,10 +53,13 @@ public class EnvelopeResource {
     }
 
     @GET
+    @Timed
     public EnvelopeState getEnvelopeStateById(@QueryParam("id") long id){
         Envelope envelope = dao.getById(id);
-        if(envelope != null)
+        if(envelope != null) {
+            System.out.println("Method ended");
             return envelope.getState();
+        }
         return EnvelopeState.NOT_FOUND;
     }
 }
