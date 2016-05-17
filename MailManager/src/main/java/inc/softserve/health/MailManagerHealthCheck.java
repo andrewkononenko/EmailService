@@ -12,23 +12,22 @@ import java.io.IOException;
 
 public class MailManagerHealthCheck extends HealthCheck{
 
-    String ESPConnectorAdminUrl;
-    String ESPConnectorHealthPath;
+    private String espConnectorAdminUrl;
+    private String espConnectorHealthPath;
     private EnvelopeTools envelopeTools;
-    ObjectMapper objectMapper = new ObjectMapper();
-
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
     public MailManagerHealthCheck(@ESPConnectorAdmin String ESPConnectorAdminUrl,
                                   @ESPConnectorHealth String ESPConnectorHealthPath,
                                   EnvelopeTools envelopeTools){
-        this.ESPConnectorAdminUrl = ESPConnectorAdminUrl;
-        this.ESPConnectorHealthPath = ESPConnectorHealthPath;
+        this.espConnectorAdminUrl = ESPConnectorAdminUrl;
+        this.espConnectorHealthPath = ESPConnectorHealthPath;
         this.envelopeTools = envelopeTools;
     }
 
     protected Result check() throws Exception {
-        String responseAsString = envelopeTools.sendGetRequest(ESPConnectorAdminUrl, ESPConnectorHealthPath);
+        String responseAsString = envelopeTools.sendGetRequest(espConnectorAdminUrl, espConnectorHealthPath);
         boolean espConnectorHealthy = false;
         try {
             JsonNode responseAsNode = objectMapper.readValue(responseAsString, JsonNode.class);
@@ -36,8 +35,9 @@ public class MailManagerHealthCheck extends HealthCheck{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (espConnectorHealthy)
+        if (espConnectorHealthy) {
             return Result.healthy();
+        }
 
         return Result.unhealthy("ESPConnector is unavailable!");
     }

@@ -12,10 +12,10 @@ public class TimeProcessingInterceptor implements MethodInterceptor {
         }
         finally {
             System.out.println(
-                    String.format(
-                            "Invocation of method %s() took %.1f ms.",
-                            invocation.getMethod().getName(),
-                            (System.nanoTime() - start) / 1000000.0));
+                String.format(
+                    "Invocation of method %s() took %.1f ms.",
+                    invocation.getMethod().getName(),
+                    (System.nanoTime() - start) / 1000000.0));
         }
     }
 }

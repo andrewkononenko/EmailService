@@ -8,19 +8,19 @@ public class EmailServiceConfiguration extends Configuration {
 
     @NotEmpty
     @JsonProperty
-    String sendEmailUrl;
+    private String sendEmailUrl;
 
     @NotEmpty
     @JsonProperty
-    String sendEmailPath;
+    private String sendEmailPath;
 
     @NotEmpty
     @JsonProperty
-    String ESPConnectorAdmin;
+    private String espConnectorAdmin;
 
     @NotEmpty
     @JsonProperty
-    String ESPConnectorHealth;
+    private String espConnectorHealth;
 
     public String getSendEmailUrl() {
         return sendEmailUrl;
@@ -38,19 +38,19 @@ public class EmailServiceConfiguration extends Configuration {
         this.sendEmailPath = sendEmailPath;
     }
 
-    public String getESPConnectorAdmin() {
-        return ESPConnectorAdmin;
+    public String getEspConnectorAdmin() {
+        return espConnectorAdmin;
     }
 
-    public void setESPConnectorAdmin(String ESPConnectorAdmin) {
-        this.ESPConnectorAdmin = ESPConnectorAdmin;
+    public void setEspConnectorAdmin(String espConnectorAdmin) {
+        this.espConnectorAdmin = espConnectorAdmin;
     }
 
-    public String getESPConnectorHealth() {
-        return ESPConnectorHealth;
+    public String getEspConnectorHealth() {
+        return espConnectorHealth;
     }
 
-    public void setESPConnectorHealth(String ESPConnectorHealth) {
-        this.ESPConnectorHealth = ESPConnectorHealth;
+    public void setEspConnectorHealth(String espConnectorHealth) {
+        this.espConnectorHealth = espConnectorHealth;
     }
 }

@@ -2,7 +2,6 @@ package inc.softserve.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import inc.softserve.Envelope;
 import inc.softserve.EnvelopeState;
 import inc.softserve.annotations.ESPConnectorPath;
@@ -21,7 +20,7 @@ public class EnvelopeToolsImpl implements EnvelopeTools{
     private String sendEnvelopeServiceUrl;
     private String sendEnvelopeServicePath;
     private ObjectMapper mapper;
-    Client client = ClientBuilder.newClient();
+    private Client client = ClientBuilder.newClient();
 
     @Inject
     public EnvelopeToolsImpl(@ESPConnectorUrl String sendEnvelopeServiceUrl,
