@@ -1,7 +1,7 @@
 sendEmailUrl: http://localhost:7080
 sendEmailPath: send
-ESPConnectorAdmin: http://localhost:7081
-ESPConnectorHealth: healthcheck
+espConnectorAdmin: http://localhost:7081
+espConnectorHealth: healthcheck
 server:
   applicationConnectors:
     - type: http
