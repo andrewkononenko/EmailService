@@ -1,31 +1,34 @@
 package inc.softserve;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
+import com.google.inject.matcher.Matchers;
+import inc.softserve.annotations.ESPConnectorAdmin;
+import inc.softserve.annotations.ESPConnectorHealth;
+import inc.softserve.annotations.ESPConnectorPath;
+import inc.softserve.annotations.ESPConnectorUrl;
+import inc.softserve.annotations.Timed;
 import inc.softserve.common.EnvelopeTools;
 import inc.softserve.common.EnvelopeToolsImpl;
 import inc.softserve.dao.EnvelopeDao;
 import inc.softserve.dao.EnvelopeDaoImpl;
+import inc.softserve.interceptors.TimeProcessingInterceptor;
 
-/**
- * Created by Andrew on 12.05.2016.
- */
 public class EmailServiceModule extends AbstractModule {
+
+    private EmailServiceConfiguration conf;
+
+    public EmailServiceModule(EmailServiceConfiguration conf) {
+        this.conf  = conf;
+    }
+
     protected void configure() {
+        bind(EmailServiceConfiguration.class).toInstance(conf);
         bind(EnvelopeTools.class).to(EnvelopeToolsImpl.class);
         bind(EnvelopeDao.class).to(EnvelopeDaoImpl.class);
-    }
-
-    @Provides
-    @Named("sendEmailUrl")
-    public String provideUrl(EmailServiceConfiguration configuration) {
-        return configuration.getSendEmailUrl();
-    }
-
-    @Provides
-    @Named("sendEmailPath")
-    public String providePath(EmailServiceConfiguration configuration) {
-        return configuration.getSendEmailPath();
+        bind(String.class).annotatedWith(ESPConnectorHealth.class).toInstance(conf.getEspConnectorHealth());
+        bind(String.class).annotatedWith(ESPConnectorAdmin.class).toInstance(conf.getEspConnectorAdmin());
+        bind(String.class).annotatedWith(ESPConnectorPath.class).toInstance(conf.getSendEmailPath());
+        bind(String.class).annotatedWith(ESPConnectorUrl.class).toInstance(conf.getSendEmailUrl());
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Timed.class),new TimeProcessingInterceptor());
     }
 }

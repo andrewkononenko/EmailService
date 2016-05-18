@@ -5,10 +5,15 @@ import inc.softserve.EmailServiceApplication;
 import inc.softserve.Envelope;
 import inc.softserve.EnvelopeState;
 import inc.softserve.common.EnvelopeTools;
+import inc.softserve.annotations.Timed;
 import inc.softserve.dao.EnvelopeDao;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -26,6 +31,7 @@ public class EnvelopeResource {
     }
 
     @POST
+    @Timed
     public long saveEnvelope(@QueryParam("Subject") String subject,
                                @QueryParam("To") String to,
                                @QueryParam("From") String username,
@@ -51,10 +57,12 @@ public class EnvelopeResource {
     }
 
     @GET
+    @Timed
     public EnvelopeState getEnvelopeStateById(@QueryParam("id") long id){
         Envelope envelope = dao.getById(id);
-        if(envelope != null)
+        if(envelope != null) {
             return envelope.getState();
+        }
         return EnvelopeState.NOT_FOUND;
     }
 }

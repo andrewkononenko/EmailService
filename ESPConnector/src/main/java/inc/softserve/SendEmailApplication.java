@@ -1,5 +1,6 @@
 package inc.softserve;
 
+import inc.softserve.healthcheck.ESPConnectorHealthCheck;
 import inc.softserve.resources.SendEmailResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -19,7 +20,9 @@ public class SendEmailApplication extends Application<SendEmailConfiguration> {
     public void run(SendEmailConfiguration configuration,
                     Environment environment) {
         final SendEmailResource resource = new SendEmailResource();
+        final ESPConnectorHealthCheck health = new ESPConnectorHealthCheck();
         environment.jersey().register(resource);
+        environment.healthChecks().register("health", health);
     }
 
 }
