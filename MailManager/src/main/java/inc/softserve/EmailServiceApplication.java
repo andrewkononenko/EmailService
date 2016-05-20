@@ -2,6 +2,7 @@ package inc.softserve;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import inc.softserve.dao.MongoManaged;
 import inc.softserve.health.MailManagerHealthCheck;
 import inc.softserve.resources.EnvelopeResource;
 import io.dropwizard.Application;

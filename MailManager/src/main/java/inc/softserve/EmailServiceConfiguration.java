@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 public class EmailServiceConfiguration extends Configuration {
 
     @NotEmpty
@@ -21,6 +24,10 @@ public class EmailServiceConfiguration extends Configuration {
     @NotEmpty
     @JsonProperty
     private String espConnectorHealth;
+
+    @NotNull
+    @Valid
+    private MongoConfiguration mongoConf;
 
     public String getSendEmailUrl() {
         return sendEmailUrl;
@@ -52,5 +59,13 @@ public class EmailServiceConfiguration extends Configuration {
 
     public void setEspConnectorHealth(String espConnectorHealth) {
         this.espConnectorHealth = espConnectorHealth;
+    }
+
+    public MongoConfiguration getMongoConf() {
+        return mongoConf;
+    }
+
+    public void setMongoConf(MongoConfiguration mongoConf) {
+        this.mongoConf = mongoConf;
     }
 }
