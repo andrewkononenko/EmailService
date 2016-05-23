@@ -4,9 +4,11 @@ import com.google.inject.Inject;
 import inc.softserve.EmailServiceApplication;
 import inc.softserve.Envelope;
 import inc.softserve.EnvelopeState;
+import inc.softserve.User;
 import inc.softserve.common.EnvelopeTools;
 import inc.softserve.annotations.Timed;
 import inc.softserve.dao.EnvelopeDao;
+import inc.softserve.dao.UserDao;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -21,45 +23,52 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class EnvelopeResource {
 
-    private EnvelopeDao dao;
+    private EnvelopeDao envelopeDao;
+    private UserDao userDao;
     private EnvelopeTools envelopeTools;
 
     @Inject
-    public EnvelopeResource(EnvelopeDao dao, EnvelopeTools envelopeTools){
-        this.dao = dao;
+    public EnvelopeResource(EnvelopeDao envelopeDao, UserDao userDao, EnvelopeTools envelopeTools){
+        this.envelopeDao = envelopeDao;
+        this.userDao = userDao;
         this.envelopeTools = envelopeTools;
     }
 
     @POST
     @Timed
-    public long saveEnvelope(@QueryParam("Subject") String subject,
+    public Envelope saveEnvelope(@QueryParam("Subject") String subject,
                                @QueryParam("To") String to,
                                @QueryParam("From") String username,
                                @QueryParam("template") String template,
                                @Context HttpServletRequest request){
-        Envelope envelope = new Envelope(EmailServiceApplication.users.get(username),
-                                            to, subject, template, EnvelopeState.IN_PROGRESS);
-        dao.saveOrUpdate(envelope);
+        User from = userDao.getUserByUsername(username);
+
+        if(from == null) {
+            throw new IllegalArgumentException("No such user registered");
+        }
+
+        Envelope envelope = new Envelope(from, to, subject, template, EnvelopeState.IN_PROGRESS);
+        Envelope savedEnvelope = envelopeDao.saveOrUpdate(envelope);
         EnvelopeState sendState = null;
         try {
-            sendState = envelopeTools.sendEnvelope(envelope);
+            sendState = envelopeTools.sendEnvelope(savedEnvelope);
         }catch(Exception e){
             e.printStackTrace();
             sendState = EnvelopeState.ERROR;
         }
 
         if(!EnvelopeState.IN_PROGRESS.equals(sendState)){
-            envelope.setState(sendState);
-            dao.saveOrUpdate(envelope);
+            savedEnvelope.setState(sendState);
+            envelopeDao.saveOrUpdate(savedEnvelope);
         }
 
-        return envelope.getId();
+        return savedEnvelope;
     }
 
     @GET
     @Timed
-    public EnvelopeState getEnvelopeStateById(@QueryParam("id") long id){
-        Envelope envelope = dao.getById(id);
+    public EnvelopeState getEnvelopeStateById(@QueryParam("id") String id){
+        Envelope envelope = envelopeDao.getById(id);
         if(envelope != null) {
             return envelope.getState();
         }

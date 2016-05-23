@@ -1,8 +1,11 @@
 package inc.softserve;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mongojack.Id;
+import org.mongojack.ObjectId;
 
 public class User {
+    private String id;
     private String username;
     private String name;
     private String surname;
@@ -34,6 +37,17 @@ public class User {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         return result;
+    }
+
+    @Id
+    @ObjectId
+    @JsonProperty
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @JsonProperty

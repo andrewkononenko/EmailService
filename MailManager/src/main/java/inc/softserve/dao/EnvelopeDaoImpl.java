@@ -1,17 +1,36 @@
 package inc.softserve.dao;
 
-import inc.softserve.EmailServiceApplication;
+import com.google.inject.Inject;
 import inc.softserve.Envelope;
+import org.bson.types.ObjectId;
+import org.mongojack.DBCursor;
+import org.mongojack.JacksonDBCollection;
+import org.mongojack.WriteResult;
+
+import static org.mongojack.JacksonDBCollection.wrap;
 
 public class EnvelopeDaoImpl implements EnvelopeDao {
-    public long saveOrUpdate(Envelope envelope) {
-        if(!EmailServiceApplication.envolopes.containsKey(envelope.getId()))
-            envelope.setId(++EmailServiceApplication.id);
-        EmailServiceApplication.envolopes.put(envelope.getId(), envelope);
-        return envelope.getId();
+
+    private MongoManaged mongo;
+    private JacksonDBCollection<Envelope, String> envelopes;
+
+    @Inject
+    public EnvelopeDaoImpl(MongoManaged mongo) {
+        this.mongo = mongo;
+        envelopes = wrap(mongo.getDb().getCollection("envelopes"), Envelope.class, String.class);
     }
 
-    public Envelope getById(long id) {
-        return EmailServiceApplication.envolopes.get(id);
+    public Envelope saveOrUpdate(Envelope envelope) {
+        WriteResult<Envelope, String> writeResult = envelopes.save(envelope);
+        Envelope savedEnvelope = writeResult.getSavedObject();
+        return savedEnvelope;
+    }
+
+    public Envelope getById(String id) {
+        DBCursor<Envelope> cursor = envelopes.find().is("_id", id);
+        if(cursor.hasNext()) {
+            return cursor.next();
+        }
+        return null;
     }
 }

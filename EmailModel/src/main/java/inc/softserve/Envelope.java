@@ -1,9 +1,11 @@
 package inc.softserve;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mongojack.Id;
+import org.mongojack.ObjectId;
 
 public class Envelope {
-    private Long id;
+    private String id;
     private User from;
     private String to;
     private String subject;
@@ -20,12 +22,14 @@ public class Envelope {
 
     public Envelope(){}
 
+    @Id
+    @ObjectId
     @JsonProperty
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -9,3 +9,9 @@ server:
   adminConnectors:
     - type: http
       port: 9081
+mongoConf:
+  host: localhost
+  port: 27017
+  db: MailManagerDB
+  user: user
+  password: pass

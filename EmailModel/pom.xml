@@ -13,6 +13,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jackson-annotations-version>2.6.6</jackson-annotations-version>
+    <mongo-jack.version>2.1.0</mongo-jack.version>
+    <guava.version>2.4.0</guava.version>
   </properties>
 
   <dependencies>
@@ -21,5 +23,25 @@
       <artifactId>jackson-annotations</artifactId>
       <version>${jackson-annotations-version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.mongojack</groupId>
+      <artifactId>mongojack</artifactId>
+      <version>${mongo-jack.version}</version>
+
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-guava</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
   </dependencies>
+
 </project>
