@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import inc.softserve.EmailServiceApplication;
 import inc.softserve.Envelope;
 import inc.softserve.EnvelopeState;
+import inc.softserve.User;
 import inc.softserve.common.EnvelopeTools;
 import inc.softserve.annotations.Timed;
 import inc.softserve.dao.EnvelopeDao;
@@ -35,29 +36,33 @@ public class EnvelopeResource {
 
     @POST
     @Timed
-    public String saveEnvelope(@QueryParam("Subject") String subject,
+    public Envelope saveEnvelope(@QueryParam("Subject") String subject,
                                @QueryParam("To") String to,
                                @QueryParam("From") String username,
                                @QueryParam("template") String template,
                                @Context HttpServletRequest request){
-        Envelope envelope = new Envelope(userDao.getUserByUsername(username),
-                                            to, subject, template, EnvelopeState.IN_PROGRESS);
-        String id = envelopeDao.saveOrUpdate(envelope);
-        envelope.setId(id);
+        User from = userDao.getUserByUsername(username);
+
+        if(from == null) {
+            throw new IllegalArgumentException("No such user registered");
+        }
+
+        Envelope envelope = new Envelope(from, to, subject, template, EnvelopeState.IN_PROGRESS);
+        Envelope savedEnvelope = envelopeDao.saveOrUpdate(envelope);
         EnvelopeState sendState = null;
         try {
-            sendState = envelopeTools.sendEnvelope(envelope);
+            sendState = envelopeTools.sendEnvelope(savedEnvelope);
         }catch(Exception e){
             e.printStackTrace();
             sendState = EnvelopeState.ERROR;
         }
 
         if(!EnvelopeState.IN_PROGRESS.equals(sendState)){
-            envelope.setState(sendState);
-            envelopeDao.saveOrUpdate(envelope);
+            savedEnvelope.setState(sendState);
+            envelopeDao.saveOrUpdate(savedEnvelope);
         }
 
-        return "\"_id\":"+"\""+envelope.getId()+"\"";
+        return savedEnvelope;
     }
 
     @GET

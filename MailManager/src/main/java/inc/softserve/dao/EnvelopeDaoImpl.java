@@ -20,10 +20,10 @@ public class EnvelopeDaoImpl implements EnvelopeDao {
         envelopes = wrap(mongo.getDb().getCollection("envelopes"), Envelope.class, String.class);
     }
 
-    public String saveOrUpdate(Envelope envelope) {
+    public Envelope saveOrUpdate(Envelope envelope) {
         WriteResult<Envelope, String> writeResult = envelopes.save(envelope);
-        String savedId = writeResult.getSavedId().toString();
-        return savedId;
+        Envelope savedEnvelope = writeResult.getSavedObject();
+        return savedEnvelope;
     }
 
     public Envelope getById(String id) {
