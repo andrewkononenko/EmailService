@@ -6,7 +6,7 @@ import inc.softserve.EnvelopeState;
 import java.io.IOException;
 
 public interface EnvelopeTools {
-    EnvelopeState sendEnvelope (Envelope envelope) throws IOException;
+    EnvelopeState sendEnvelope (Envelope envelope) throws Exception;
     String sendGetRequest(String url, String path);
 }
 

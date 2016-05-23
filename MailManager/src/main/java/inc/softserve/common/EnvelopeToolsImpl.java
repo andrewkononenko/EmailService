@@ -31,7 +31,7 @@ public class EnvelopeToolsImpl implements EnvelopeTools{
         this.mapper = mapper;
     }
 
-    public EnvelopeState sendEnvelope(Envelope envelope) throws IOException {
+    public EnvelopeState sendEnvelope(Envelope envelope) throws Exception {
         WebTarget target = client.target(sendEnvelopeServiceUrl).path(sendEnvelopeServicePath);
         String envelopeJson = mapper.writeValueAsString(envelope);
 

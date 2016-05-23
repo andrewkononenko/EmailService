@@ -28,6 +28,5 @@ public class EmailServiceApplication extends Application<EmailServiceConfigurati
         Injector injector  = Guice.createInjector(new EmailServiceModule(configuration));
         environment.jersey().register(injector.getInstance(EnvelopeResource.class));
         environment.healthChecks().register("health", injector.getInstance(MailManagerHealthCheck.class));
-        environment.healthChecks().register("mongoHealth", injector.getInstance(MongoHealthCheck.class));
     }
 }
