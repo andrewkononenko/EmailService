@@ -46,14 +46,14 @@ public class MailManagerHealthCheck extends HealthCheck{
             unhealthyMessage = unhealthyMessage.append("ESPConnector is unavailable!");
         }
 
-        try{
+        try {
             DB db = mongo.getDb();
             db.getStats();
-        }catch(Exception e){
-                  unhealthyMessage = unhealthyMessage.append(" Mongo DB is unavailable!");
+        } catch (Exception e) {
+            unhealthyMessage = unhealthyMessage.append(" Mongo DB is unavailable!");
         }
 
-        if(unhealthyMessage.length() != 0){
+        if (unhealthyMessage.length() != 0) {
             return Result.unhealthy(unhealthyMessage.toString());
         }
 
