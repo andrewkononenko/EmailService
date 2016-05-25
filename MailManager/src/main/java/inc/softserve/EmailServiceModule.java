@@ -17,6 +17,8 @@ import inc.softserve.dao.MongoManaged;
 import inc.softserve.dao.UserDao;
 import inc.softserve.dao.UserDaoImpl;
 import inc.softserve.interceptors.TimeProcessingInterceptor;
+import inc.softserve.services.EnvelopeService;
+import inc.softserve.services.EnvelopeServiceImpl;
 
 import java.net.UnknownHostException;
 
@@ -33,6 +35,7 @@ public class EmailServiceModule extends AbstractModule {
         bind(EnvelopeTools.class).to(EnvelopeToolsImpl.class);
         bind(EnvelopeDao.class).to(EnvelopeDaoImpl.class);
         bind(UserDao.class).to(UserDaoImpl.class);
+        bind(EnvelopeService.class).to(EnvelopeServiceImpl.class);
         bind(String.class).annotatedWith(ESPConnectorHealth.class).toInstance(conf.getEspConnectorHealth());
         bind(String.class).annotatedWith(ESPConnectorAdmin.class).toInstance(conf.getEspConnectorAdmin());
         bind(String.class).annotatedWith(ESPConnectorPath.class).toInstance(conf.getSendEmailPath());

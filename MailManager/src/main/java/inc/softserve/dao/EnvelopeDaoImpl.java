@@ -2,7 +2,6 @@ package inc.softserve.dao;
 
 import com.google.inject.Inject;
 import inc.softserve.Envelope;
-import org.bson.types.ObjectId;
 import org.mongojack.DBCursor;
 import org.mongojack.JacksonDBCollection;
 import org.mongojack.WriteResult;
@@ -27,10 +26,14 @@ public class EnvelopeDaoImpl implements EnvelopeDao {
     }
 
     public Envelope getById(String id) {
-        DBCursor<Envelope> cursor = envelopes.find().is("_id", id);
-        if(cursor.hasNext()) {
-            return cursor.next();
+        try {
+            DBCursor<Envelope> cursor = envelopes.find().is("_id", id);
+            if (cursor.hasNext()) {
+                return cursor.next();
+            }
+            return null;
+        } catch (IllegalArgumentException e) {
+            return null;
         }
-        return null;
     }
 }

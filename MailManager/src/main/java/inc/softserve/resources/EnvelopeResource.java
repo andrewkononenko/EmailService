@@ -9,6 +9,7 @@ import inc.softserve.common.EnvelopeTools;
 import inc.softserve.annotations.Timed;
 import inc.softserve.dao.EnvelopeDao;
 import inc.softserve.dao.UserDao;
+import inc.softserve.services.EnvelopeService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -23,15 +24,11 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class EnvelopeResource {
 
-    private EnvelopeDao envelopeDao;
-    private UserDao userDao;
-    private EnvelopeTools envelopeTools;
+    private EnvelopeService envelopeService;
 
     @Inject
-    public EnvelopeResource(EnvelopeDao envelopeDao, UserDao userDao, EnvelopeTools envelopeTools){
-        this.envelopeDao = envelopeDao;
-        this.userDao = userDao;
-        this.envelopeTools = envelopeTools;
+    public EnvelopeResource(EnvelopeService envelopeService) {
+        this.envelopeService = envelopeService;
     }
 
     @POST
@@ -39,39 +36,13 @@ public class EnvelopeResource {
     public Envelope saveEnvelope(@QueryParam("Subject") String subject,
                                @QueryParam("To") String to,
                                @QueryParam("From") String username,
-                               @QueryParam("template") String template,
-                               @Context HttpServletRequest request){
-        User from = userDao.getUserByUsername(username);
-
-        if(from == null) {
-            throw new IllegalArgumentException("No such user registered");
-        }
-
-        Envelope envelope = new Envelope(from, to, subject, template, EnvelopeState.IN_PROGRESS);
-        Envelope savedEnvelope = envelopeDao.saveOrUpdate(envelope);
-        EnvelopeState sendState = null;
-        try {
-            sendState = envelopeTools.sendEnvelope(savedEnvelope);
-        }catch(Exception e){
-            e.printStackTrace();
-            sendState = EnvelopeState.ERROR;
-        }
-
-        if(!EnvelopeState.IN_PROGRESS.equals(sendState)){
-            savedEnvelope.setState(sendState);
-            envelopeDao.saveOrUpdate(savedEnvelope);
-        }
-
-        return savedEnvelope;
+                               @QueryParam("template") String template){
+        return envelopeService.saveOrUpdate(subject, to, username, template);
     }
 
     @GET
     @Timed
     public EnvelopeState getEnvelopeStateById(@QueryParam("id") String id){
-        Envelope envelope = envelopeDao.getById(id);
-        if(envelope != null) {
-            return envelope.getState();
-        }
-        return EnvelopeState.NOT_FOUND;
+        return envelopeService.getEnvelopeStateById(id);
     }
 }

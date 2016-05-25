@@ -2,16 +2,11 @@ package inc.softserve;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import inc.softserve.dao.MongoManaged;
 import inc.softserve.health.MailManagerHealthCheck;
-import inc.softserve.health.MongoHealthCheck;
 import inc.softserve.resources.EnvelopeResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class EmailServiceApplication extends Application<EmailServiceConfiguration> {
 
