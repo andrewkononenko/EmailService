@@ -10,6 +10,7 @@ import inc.softserve.annotations.Timed;
 import inc.softserve.dao.EnvelopeDao;
 import inc.softserve.dao.UserDao;
 import inc.softserve.services.EnvelopeService;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -34,9 +35,9 @@ public class EnvelopeResource {
     @POST
     @Timed
     public Envelope saveEnvelope(@QueryParam("Subject") String subject,
-                               @QueryParam("To") String to,
-                               @QueryParam("From") String username,
-                               @QueryParam("template") String template){
+                                 @NotEmpty @QueryParam("To") String to,
+                                 @NotEmpty @QueryParam("From") String username,
+                                 @NotEmpty @QueryParam("template") String template){
         return envelopeService.saveOrUpdate(subject, to, username, template);
     }
 

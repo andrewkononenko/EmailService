@@ -17,14 +17,25 @@
     <email-core.version>1.0-SNAPSHOT</email-core.version>
     <mongo-jack.version>2.1.0</mongo-jack.version>
     <guava.version>2.4.0</guava.version>
+    <testng.version>6.8</testng.version>
+    <mockito.version>1.9.5</mockito.version>
   </properties>
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.3</version>
+        <version>2.4.1</version>
         <configuration>
           <filters>
             <filter>
@@ -93,6 +104,18 @@
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${testng.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
     </dependency>
   </dependencies>
 </project>
