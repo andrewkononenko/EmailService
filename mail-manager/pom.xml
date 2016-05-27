@@ -13,7 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <dropwizard.version>0.8.0-rc1</dropwizard.version>
     <guice.version>3.0</guice.version>
-    <email-core.version>1.0-SNAPSHOT</email-core.version>
+    <email-model.version>0.1-alpha</email-model.version>
     <mongo-jack.version>2.1.0</mongo-jack.version>
     <guava.version>2.4.0</guava.version>
     <testng.version>6.8</testng.version>
@@ -82,8 +82,8 @@
 
     <dependency>
       <groupId>inc.softserve</groupId>
-      <artifactId>email-core</artifactId>
-      <version>${email-core.version}</version>
+      <artifactId>email-model</artifactId>
+      <version>${email-model.version}</version>
     </dependency>
 
     <dependency>
