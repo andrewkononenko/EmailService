@@ -24,11 +24,11 @@ public class MailManagerHealthCheck extends HealthCheck{
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
-    public MailManagerHealthCheck(@ESPConnectorAdmin String ESPConnectorAdminUrl,
-                                  @ESPConnectorHealth String ESPConnectorHealthPath,
+    public MailManagerHealthCheck(@ESPConnectorAdmin String espConnectorAdminUrl,
+                                  @ESPConnectorHealth String espConnectorHealthPath,
                                   EnvelopeTools envelopeTools, MongoManaged mongo){
-        this.espConnectorAdminUrl = ESPConnectorAdminUrl;
-        this.espConnectorHealthPath = ESPConnectorHealthPath;
+        this.espConnectorAdminUrl = espConnectorAdminUrl;
+        this.espConnectorHealthPath = espConnectorHealthPath;
         this.envelopeTools = envelopeTools;
         this.mongo = mongo;
     }
@@ -46,11 +46,12 @@ public class MailManagerHealthCheck extends HealthCheck{
 
         try {
             executor.execute(commonHealth);
-            return (commonHealth.get(500L, TimeUnit.MILLISECONDS)) ?
-                    Result.healthy() :
-                    Result.unhealthy("Service unavailable!");
-        } catch (Exception e) {}
-
+            if (commonHealth.get(500L, TimeUnit.MILLISECONDS)) {
+                return Result.healthy();
+            }
+        } catch (Exception e) {
+            // Just unhealthy
+        }
         return Result.unhealthy("Service unavailable!");
     }
 
@@ -65,12 +66,8 @@ public class MailManagerHealthCheck extends HealthCheck{
     }
 
     private boolean isMongoHealthy(){
-        try {
-            DB db = mongo.getDb();
-            db.getStats();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        DB db = mongo.getDb();
+        db.getStats();
+        return true;
     }
 }
