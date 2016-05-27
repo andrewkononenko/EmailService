@@ -24,11 +24,11 @@ public class MailManagerHealthCheck extends HealthCheck{
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
-    public MailManagerHealthCheck(@ESPConnectorAdmin String ESPConnectorAdminUrl,
-                                  @ESPConnectorHealth String ESPConnectorHealthPath,
+    public MailManagerHealthCheck(@ESPConnectorAdmin String espConnectorAdminUrl,
+                                  @ESPConnectorHealth String espConnectorHealthPath,
                                   EnvelopeTools envelopeTools, MongoManaged mongo){
-        this.espConnectorAdminUrl = ESPConnectorAdminUrl;
-        this.espConnectorHealthPath = ESPConnectorHealthPath;
+        this.espConnectorAdminUrl = espConnectorAdminUrl;
+        this.espConnectorHealthPath = espConnectorHealthPath;
         this.envelopeTools = envelopeTools;
         this.mongo = mongo;
     }
