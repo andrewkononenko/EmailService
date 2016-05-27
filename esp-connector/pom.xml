@@ -3,39 +3,24 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>inc.softserve</groupId>
-  <artifactId>EmailService</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>esp-connector</artifactId>
+  <version>0.1-alpha</version>
   <packaging>jar</packaging>
 
-  <name>EmailService</name>
-  <url>http://maven.apache.org</url>
+  <name>Stub service that talks to ESP</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <dropwizard.version>0.8.0-rc1</dropwizard.version>
-    <guice.version>3.0</guice.version>
+    <dropwizard.version>0.9.2</dropwizard.version>
     <email-core.version>1.0-SNAPSHOT</email-core.version>
-    <mongo-jack.version>2.1.0</mongo-jack.version>
-    <guava.version>2.4.0</guava.version>
-    <testng.version>6.8</testng.version>
-    <mockito.version>1.9.5</mockito.version>
   </properties>
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.1</version>
+        <version>2.3</version>
         <configuration>
           <filters>
             <filter>
@@ -58,7 +43,7 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>inc.softserve.EmailServiceApplication</mainClass>
+                  <mainClass>inc.softserve.SendEmailApplication</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -76,46 +61,8 @@
     </dependency>
 
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>${guice.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>inc.softserve</groupId>
       <artifactId>email-core</artifactId>
       <version>${email-core.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.mongojack</groupId>
-      <artifactId>mongojack</artifactId>
-      <version>${mongo-jack.version}</version>
-
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.datatype</groupId>
-          <artifactId>jackson-datatype-guava</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-guava</artifactId>
-      <version>${guava.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${testng.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>${mockito.version}</version>
-    </dependency>
-  </dependencies>
-</project>
+  </dependencies></project>
