@@ -47,7 +47,7 @@ public class MailManagerHealthCheck extends HealthCheck{
         try {
             executor.execute(commonHealth);
             if (commonHealth.get(500L, TimeUnit.MILLISECONDS)) {
-                Result.healthy();
+                return Result.healthy();
             }
         } catch (Exception e) {
             // Just unhealthy
