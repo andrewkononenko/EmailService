@@ -10,7 +10,10 @@ import inc.softserve.annotations.ESPConnectorHealth;
 import inc.softserve.common.EnvelopeTools;
 import inc.softserve.dao.MongoManaged;
 
-import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 public class MailManagerHealthCheck extends HealthCheck{
 
@@ -30,33 +33,44 @@ public class MailManagerHealthCheck extends HealthCheck{
         this.mongo = mongo;
     }
 
-    protected Result check() throws Exception {
-        boolean espConnectorHealthy = false;
-        StringBuilder unhealthyMessage = new StringBuilder("");
+    protected Result check() {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        FutureTask<Boolean> espConnectorCheck = new FutureTask<>(this::isEspConnectorHealthy);
+        FutureTask<Boolean> mongoCheck = new FutureTask<>(this::isMongoHealthy);
 
+        FutureTask<Boolean> commonHealth = new FutureTask<>(() -> {
+            executor.execute(espConnectorCheck);
+            executor.execute(mongoCheck);
+            return espConnectorCheck.get() && mongoCheck.get();
+        });
+
+        try {
+            executor.execute(commonHealth);
+            return (commonHealth.get(500L, TimeUnit.MILLISECONDS)) ?
+                    Result.healthy() :
+                    Result.unhealthy("Service unavailable!");
+        } catch (Exception e) {}
+
+        return Result.unhealthy("Service unavailable!");
+    }
+
+    private boolean isEspConnectorHealthy(){
         try {
             String responseAsString = envelopeTools.sendGetRequest(espConnectorAdminUrl, espConnectorHealthPath);
             JsonNode responseAsNode = objectMapper.readValue(responseAsString, JsonNode.class);
-            espConnectorHealthy = responseAsNode.get("health").get("healthy").asBoolean();
+            return responseAsNode.get("health").get("healthy").asBoolean();
         } catch (Exception e) {
-            e.printStackTrace();
+            return false;
         }
+    }
 
-        if (!espConnectorHealthy) {
-            unhealthyMessage = unhealthyMessage.append("ESPConnector is unavailable!");
-        }
-
+    private boolean isMongoHealthy(){
         try {
             DB db = mongo.getDb();
             db.getStats();
+            return true;
         } catch (Exception e) {
-            unhealthyMessage = unhealthyMessage.append(" Mongo DB is unavailable!");
+            return false;
         }
-
-        if (unhealthyMessage.length() != 0) {
-            return Result.unhealthy(unhealthyMessage.toString());
-        }
-
-        return Result.healthy();
     }
 }
