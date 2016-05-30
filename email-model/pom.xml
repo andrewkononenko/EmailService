@@ -2,9 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>inc.softserve</groupId>
+  <parent>
+    <groupId>inc.softserve</groupId>
+    <artifactId>email-service</artifactId>
+    <version>0.1-alpha</version>
+  </parent>
+
   <artifactId>email-model</artifactId>
-  <version>0.1-alpha</version>
   <packaging>jar</packaging>
 
   <name>Common model unit</name>
@@ -42,5 +46,4 @@
       <version>${guava.version}</version>
     </dependency>
   </dependencies>
-
 </project>

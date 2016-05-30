@@ -2,9 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>inc.softserve</groupId>
+  <parent>
+    <groupId>inc.softserve</groupId>
+    <artifactId>email-service</artifactId>
+    <version>0.1-alpha</version>
+  </parent>
+
   <artifactId>esp-connector</artifactId>
-  <version>0.1-alpha</version>
   <packaging>jar</packaging>
 
   <name>Stub service that talks to ESP</name>
@@ -12,7 +16,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <dropwizard.version>0.9.2</dropwizard.version>
-    <email-model.version>0.1-alpha</email-model.version>
   </properties>
 
   <build>
@@ -63,6 +66,6 @@
     <dependency>
       <groupId>inc.softserve</groupId>
       <artifactId>email-model</artifactId>
-      <version>${email-model.version}</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies></project>

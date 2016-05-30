@@ -2,9 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>inc.softserve</groupId>
+  <parent>
+    <groupId>inc.softserve</groupId>
+    <artifactId>email-service</artifactId>
+    <version>0.1-alpha</version>
+  </parent>
+
   <artifactId>mail-manager</artifactId>
-  <version>0.1-alpha</version>
   <packaging>jar</packaging>
 
   <name>Email requests processor</name>
@@ -13,7 +17,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <dropwizard.version>0.8.0-rc1</dropwizard.version>
     <guice.version>3.0</guice.version>
-    <email-model.version>0.1-alpha</email-model.version>
     <mongo-jack.version>2.1.0</mongo-jack.version>
     <guava.version>2.4.0</guava.version>
     <testng.version>6.8</testng.version>
@@ -83,7 +86,7 @@
     <dependency>
       <groupId>inc.softserve</groupId>
       <artifactId>email-model</artifactId>
-      <version>${email-model.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
