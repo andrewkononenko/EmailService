@@ -1,49 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>inc.softserve</groupId>
-    <artifactId>email-service</artifactId>
-    <version>0.1-alpha</version>
-  </parent>
+    <parent>
+        <groupId>inc.softserve</groupId>
+        <artifactId>email-service</artifactId>
+        <version>0.1-alpha</version>
+    </parent>
 
-  <artifactId>email-model</artifactId>
-  <packaging>jar</packaging>
+    <artifactId>email-model</artifactId>
+    <packaging>jar</packaging>
 
-  <name>Common model unit</name>
+    <name>Common model unit</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jackson-annotations-version>2.6.6</jackson-annotations-version>
-    <mongo-jack.version>2.1.0</mongo-jack.version>
-    <guava.version>2.4.0</guava.version>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>${jackson-annotations-version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mongojack</groupId>
-      <artifactId>mongojack</artifactId>
-      <version>${mongo-jack.version}</version>
-
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.datatype</groupId>
-          <artifactId>jackson-datatype-guava</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-guava</artifactId>
-      <version>${guava.version}</version>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mongojack</groupId>
+            <artifactId>mongojack</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-guava</artifactId>
+        </dependency>
+    </dependencies>
 </project>

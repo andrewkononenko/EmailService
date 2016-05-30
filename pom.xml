@@ -1,17 +1,79 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>inc.softserve</groupId>
-  <artifactId>email-service</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-alpha</version>
-  <name>Parent project for easy building the projects</name>
-  
-  <modules>
-    <module>./email-model</module>
-    <module>./esp-connector</module>
-    <module>./mail-manager</module>
-  </modules>
-  <url>http://maven.apache.org</url>
+    <groupId>inc.softserve</groupId>
+    <artifactId>email-service</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1-alpha</version>
+    <name>Email Service application set</name>
+
+    <modules>
+        <module>./email-model</module>
+        <module>./esp-connector</module>
+        <module>./mail-manager</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <dropwizard.version>0.8.0-rc1</dropwizard.version>
+        <guice.version>3.0</guice.version>
+        <mongo-jack.version>2.1.0</mongo-jack.version>
+        <guava.version>2.4.0</guava.version>
+        <testng.version>6.8</testng.version>
+        <mockito.version>1.9.5</mockito.version>
+        <jackson-annotations-version>2.6.6</jackson-annotations-version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-core</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>inc.softserve</groupId>
+                <artifactId>email-model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mongojack</groupId>
+                <artifactId>mongojack</artifactId>
+                <version>${mongo-jack.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.datatype</groupId>
+                        <artifactId>jackson-datatype-guava</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations-version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>
