@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ public class MailManagerHealthCheckTest extends Assert {
     private MailManagerHealthCheck healthCheck;
     private EnvelopeTools envTools;
     private MongoManaged mongo;
+    private DB dbMock;
     private final String HEALTHY_ESP_MESSAGE = "{\"deadlocks\":{\"healthy\":true},\"health\":{\"healthy\":true}}";
 
     @BeforeClass
@@ -28,55 +30,66 @@ public class MailManagerHealthCheckTest extends Assert {
         envTools = mock(EnvelopeTools.class);
         mongo = mock(MongoManaged.class);
         this.healthCheck = new MailManagerHealthCheck("","", envTools, mongo);
+
+        dbMock = mock(DB.class);
+        when(mongo.getDb()).thenReturn(dbMock);
     }
 
-    @Test
+    @Test(priority = 1)
     public void testCheckHealthy() {
-        DB dbMock = mock(DB.class);
         CommandResult statsResultMock = mock(CommandResult.class);
-        when(mongo.getDb()).thenReturn(dbMock);
         when(dbMock.getStats()).thenReturn(statsResultMock);
         doReturn(HEALTHY_ESP_MESSAGE).when(envTools).sendGetRequest(anyString(),anyString());
         assertEquals(healthCheck.check(), HealthCheck.Result.healthy());
     }
 
-    @Test
-    public void testCheckMongoException() {
-        DB dbMock = mock(DB.class);
-        when(mongo.getDb()).thenReturn(dbMock);
-        when(dbMock.getStats()).thenThrow(new RuntimeException());
-        when(envTools.sendGetRequest(anyString(),anyString())).thenReturn(HEALTHY_ESP_MESSAGE);
-        assertEquals(healthCheck.check(), HealthCheck.Result.unhealthy("Service unavailable!"));
-    }
-
-    @Test
+    @Test(priority = 2)
     public void testCheckMongoDelay() {
-        DB dbMock = mock(DB.class);
         CommandResult statsResultMock = mock(CommandResult.class);
-        when(mongo.getDb()).thenReturn(dbMock);
         when(dbMock.getStats()).thenAnswer(args -> {TimeUnit.SECONDS.sleep(1); return statsResultMock;});
         when(envTools.sendGetRequest(anyString(),anyString())).thenReturn(HEALTHY_ESP_MESSAGE);
         assertEquals(healthCheck.check(), HealthCheck.Result.unhealthy("Service unavailable!"));
     }
 
-    @Test
-    public void testCheckEspConnectorException() {
-        DB dbMock = mock(DB.class);
+    @Test(priority = 3)
+    public void testCheckMongoLowDelay() {
         CommandResult statsResultMock = mock(CommandResult.class);
-        when(mongo.getDb()).thenReturn(dbMock);
-        when(dbMock.getStats()).thenReturn(statsResultMock);
-        when(envTools.sendGetRequest(anyString(),anyString())).thenThrow(new ArrayIndexOutOfBoundsException());
-        assertEquals(healthCheck.check(), HealthCheck.Result.unhealthy("Service unavailable!"));
+        when(dbMock.getStats()).thenAnswer(args -> {TimeUnit.MILLISECONDS.sleep(400); return statsResultMock;});
+        when(envTools.sendGetRequest(anyString(),anyString())).thenReturn(HEALTHY_ESP_MESSAGE);
+        assertEquals(healthCheck.check(), HealthCheck.Result.healthy());
     }
 
-    @Test
+    @Test(priority = 4)
     public void testCheckEspConnectorDelay() {
-        DB dbMock = mock(DB.class);
         CommandResult statsResultMock = mock(CommandResult.class);
-        when(mongo.getDb()).thenReturn(dbMock);
         when(dbMock.getStats()).thenReturn(statsResultMock);
         when(envTools.sendGetRequest(anyString(),anyString())).thenAnswer(args -> {TimeUnit.SECONDS.sleep(2);
                                                                                 return HEALTHY_ESP_MESSAGE;});
+        assertEquals(healthCheck.check(), HealthCheck.Result.unhealthy("Service unavailable!"));
+    }
+
+    @Test(priority = 5)
+    public void testCheckEspConnectorLowDelay() {
+        CommandResult statsResultMock = mock(CommandResult.class);
+        when(dbMock.getStats()).thenReturn(statsResultMock);
+        doAnswer(args -> {TimeUnit.MILLISECONDS.sleep(400);
+                return HEALTHY_ESP_MESSAGE;})
+                .when(envTools).sendGetRequest(anyString(),anyString());
+        assertEquals(healthCheck.check(), HealthCheck.Result.healthy());
+    }
+
+    @Test(priority = 6)
+    public void testCheckMongoException() {
+        when(dbMock.getStats()).thenThrow(new RuntimeException());
+        when(envTools.sendGetRequest(anyString(),anyString())).thenReturn(HEALTHY_ESP_MESSAGE);
+        assertEquals(healthCheck.check(), HealthCheck.Result.unhealthy("Service unavailable!"));
+    }
+
+    @Test(priority = 7)
+    public void testCheckEspConnectorException() {
+        CommandResult statsResultMock = mock(CommandResult.class);
+        doReturn(statsResultMock).when(dbMock).getStats();
+        when(envTools.sendGetRequest(anyString(),anyString())).thenThrow(new RuntimeException());
         assertEquals(healthCheck.check(), HealthCheck.Result.unhealthy("Service unavailable!"));
     }
 }
