@@ -4,7 +4,7 @@
     <parent>
         <groupId>inc.softserve</groupId>
         <artifactId>email-service</artifactId>
-        <version>0.1-alpha</version>
+        <version>0.2-alpha-SNAPSHOT</version>
     </parent>
 
     <artifactId>email-model</artifactId>

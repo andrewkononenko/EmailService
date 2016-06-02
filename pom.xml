@@ -4,12 +4,12 @@
     <groupId>inc.softserve</groupId>
     <artifactId>email-service</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-alpha</version>
+    <version>0.2-alpha-SNAPSHOT</version>
     <name>Email Service application set</name>
 
     <scm>
         <developerConnection>scm:git:https://github.com/andrewkononenko/EmailService</developerConnection>
-      <tag>email-service-0.1-alpha</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <modules>
