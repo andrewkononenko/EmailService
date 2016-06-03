@@ -1,53 +1,33 @@
 package inc.softserve.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import inc.softserve.Envelope;
 import inc.softserve.EnvelopeState;
-import inc.softserve.annotations.ESPConnectorPath;
-import inc.softserve.annotations.ESPConnectorUrl;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 
-public class EnvelopeToolsImpl implements EnvelopeTools{
+public class EnvelopeToolsImpl implements EnvelopeTools {
 
-    private String sendEnvelopeServiceUrl;
-    private String sendEnvelopeServicePath;
-    private ObjectMapper mapper;
     private Client client = ClientBuilder.newClient();
+    private EnvelopeQueueProducer producer;
 
     @Inject
-    public EnvelopeToolsImpl(@ESPConnectorUrl String sendEnvelopeServiceUrl,
-                             @ESPConnectorPath String sendEnvelopeServicePath,
-                             ObjectMapper mapper) {
-        this.sendEnvelopeServiceUrl = sendEnvelopeServiceUrl;
-        this.sendEnvelopeServicePath = sendEnvelopeServicePath;
-        this.mapper = mapper;
+    public EnvelopeToolsImpl(EnvelopeQueueProducer producer) {
+        this.producer = producer;
     }
 
     public EnvelopeState sendEnvelope(Envelope envelope) throws Exception {
-        WebTarget target = client.target(sendEnvelopeServiceUrl).path(sendEnvelopeServicePath);
-        String envelopeJson = mapper.writeValueAsString(envelope);
-
-        Response sendEnvResponse = target.request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.entity(envelopeJson,MediaType.APPLICATION_JSON_TYPE));
-
-        String responseAsString = sendEnvResponse.readEntity(String.class);
-        EnvelopeState state = mapper.readValue(responseAsString,EnvelopeState.class);
-        return state;
+        return producer.send(envelope);
     }
 
-    public String sendGetRequest(String url, String path){
+    public String sendGetRequest(String url, String path) {
         WebTarget target = client.target(url).path(path);
         Response sendEnvResponse = target.request(MediaType.APPLICATION_JSON_TYPE).get();
-        String responseAsString = sendEnvResponse.readEntity(String.class);
 
-        return responseAsString;
+        return sendEnvResponse.readEntity(String.class);
     }
 }

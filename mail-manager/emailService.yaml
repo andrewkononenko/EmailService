@@ -2,6 +2,9 @@ sendEmailUrl: http://localhost:7080
 sendEmailPath: send
 espConnectorAdmin: http://localhost:7081
 espConnectorHealth: healthcheck
+activeMQPath: tcp://DP390:61616
+queueName: EnvelopesToSend
+maxReconnectCount: 5
 server:
   applicationConnectors:
     - type: http

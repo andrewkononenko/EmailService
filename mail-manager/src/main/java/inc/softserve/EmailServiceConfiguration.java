@@ -25,9 +25,19 @@ public class EmailServiceConfiguration extends Configuration {
     @JsonProperty
     private String espConnectorHealth;
 
+    @NotEmpty
+    @JsonProperty
+    private String activeMQPath;
+
     @NotNull
     @Valid
     private MongoConfiguration mongoConf;
+
+    @NotNull
+    private String queueName;
+
+    @NotNull
+    private Integer maxReconnectCount;
 
     public String getSendEmailUrl() {
         return sendEmailUrl;
@@ -67,5 +77,29 @@ public class EmailServiceConfiguration extends Configuration {
 
     public void setMongoConf(MongoConfiguration mongoConf) {
         this.mongoConf = mongoConf;
+    }
+
+    public String getActiveMQPath() {
+        return activeMQPath;
+    }
+
+    public void setActiveMQPath(String activeMQPath) {
+        this.activeMQPath = activeMQPath;
+    }
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
+    }
+
+    public Integer getMaxReconnectCount() {
+        return maxReconnectCount;
+    }
+
+    public void setMaxReconnectCount(Integer maxReconnectCount) {
+        this.maxReconnectCount = maxReconnectCount;
     }
 }

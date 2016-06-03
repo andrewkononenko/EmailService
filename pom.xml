@@ -2,6 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/andrewkononenko/EmailService</developerConnection>
+    </scm>
+
     <groupId>inc.softserve</groupId>
     <artifactId>email-service</artifactId>
     <packaging>pom</packaging>
@@ -23,6 +27,8 @@
         <testng.version>6.8</testng.version>
         <mockito.version>1.9.5</mockito.version>
         <jackson-annotations-version>2.6.6</jackson-annotations-version>
+        <activemq.version>5.7.0</activemq.version>
+        <maven-release.version>2.5.3</maven-release.version>
     </properties>
 
     <dependencyManagement>
@@ -73,7 +79,22 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson-annotations-version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-core</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release.version}</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

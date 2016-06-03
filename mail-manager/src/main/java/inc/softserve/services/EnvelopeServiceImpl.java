@@ -31,7 +31,7 @@ public class EnvelopeServiceImpl implements EnvelopeService{
 
         Envelope envelope = new Envelope(from, to, subject, template, EnvelopeState.IN_PROGRESS);
         Envelope savedEnvelope = envelopeDao.saveOrUpdate(envelope);
-        EnvelopeState sendState = null;
+        EnvelopeState sendState;
         try {
             sendState = envelopeTools.sendEnvelope(savedEnvelope);
         } catch (Exception e) {
@@ -39,11 +39,8 @@ public class EnvelopeServiceImpl implements EnvelopeService{
             sendState = EnvelopeState.ERROR;
         }
 
-        if (!EnvelopeState.IN_PROGRESS.equals(sendState)) {
-            savedEnvelope.setState(sendState);
-            envelopeDao.saveOrUpdate(savedEnvelope);
-        }
-
+        savedEnvelope.setState(sendState);
+        envelopeDao.saveOrUpdate(savedEnvelope);
         return savedEnvelope;
     }
 
