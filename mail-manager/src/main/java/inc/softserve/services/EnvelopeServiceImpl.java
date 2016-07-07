@@ -8,7 +8,7 @@ import inc.softserve.common.EnvelopeTools;
 import inc.softserve.dao.EnvelopeDao;
 import inc.softserve.dao.UserDao;
 
-public class EnvelopeServiceImpl implements EnvelopeService{
+public class EnvelopeServiceImpl implements EnvelopeService {
 
     private EnvelopeDao envelopeDao;
     private UserDao userDao;
@@ -25,7 +25,7 @@ public class EnvelopeServiceImpl implements EnvelopeService{
 
         User from = userDao.getUserByUsername(username);
 
-        if(from == null) {
+        if (from == null) {
             throw new IllegalArgumentException("No such user registered");
         }
 

@@ -27,7 +27,7 @@ public class EmailServiceModule extends AbstractModule {
     private EmailServiceConfiguration conf;
 
     public EmailServiceModule(EmailServiceConfiguration conf) {
-        this.conf  = conf;
+        this.conf = conf;
     }
 
     protected void configure() {
@@ -41,8 +41,8 @@ public class EmailServiceModule extends AbstractModule {
         bind(String.class).annotatedWith(ESPConnectorPath.class).toInstance(conf.getSendEmailPath());
         bind(String.class).annotatedWith(ESPConnectorUrl.class).toInstance(conf.getSendEmailUrl());
         bind(MongoConfiguration.class).annotatedWith(Configuration.class).toInstance(conf.getMongoConf());
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Timed.class),new TimeProcessingInterceptor());
-        }
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Timed.class), new TimeProcessingInterceptor());
+    }
 
     @Provides
     public MongoManaged provideMongoManaged() throws UnknownHostException {

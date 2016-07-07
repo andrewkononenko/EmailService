@@ -19,8 +19,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     public User getUserByUsername(String username) {
-        DBCursor<User> cursor = users.find(DBQuery.is("username", username),DBProjection.exclude("_id"));
-        if(cursor.hasNext()) {
+        DBCursor<User> cursor = users.find(DBQuery.is("username", username), DBProjection.exclude("_id"));
+        if (cursor.hasNext()) {
             return cursor.next();
         }
         return null;

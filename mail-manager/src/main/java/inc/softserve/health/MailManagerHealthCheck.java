@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
-public class MailManagerHealthCheck extends HealthCheck{
+public class MailManagerHealthCheck extends HealthCheck {
 
     private String espConnectorAdminUrl;
     private String espConnectorHealthPath;
@@ -26,7 +26,7 @@ public class MailManagerHealthCheck extends HealthCheck{
     @Inject
     public MailManagerHealthCheck(@ESPConnectorAdmin String espConnectorAdminUrl,
                                   @ESPConnectorHealth String espConnectorHealthPath,
-                                  EnvelopeTools envelopeTools, MongoManaged mongo){
+                                  EnvelopeTools envelopeTools, MongoManaged mongo) {
         this.espConnectorAdminUrl = espConnectorAdminUrl;
         this.espConnectorHealthPath = espConnectorHealthPath;
         this.envelopeTools = envelopeTools;
@@ -55,7 +55,7 @@ public class MailManagerHealthCheck extends HealthCheck{
         return Result.unhealthy("Service unavailable!");
     }
 
-    private boolean isEspConnectorHealthy(){
+    private boolean isEspConnectorHealthy() {
         try {
             String responseAsString = envelopeTools.sendGetRequest(espConnectorAdminUrl, espConnectorHealthPath);
             JsonNode responseAsNode = objectMapper.readValue(responseAsString, JsonNode.class);
@@ -65,7 +65,7 @@ public class MailManagerHealthCheck extends HealthCheck{
         }
     }
 
-    private boolean isMongoHealthy(){
+    private boolean isMongoHealthy() {
         DB db = mongo.getDb();
         db.getStats();
         return true;

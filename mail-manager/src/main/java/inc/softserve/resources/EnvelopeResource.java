@@ -37,13 +37,13 @@ public class EnvelopeResource {
     public Envelope saveEnvelope(@QueryParam("Subject") String subject,
                                  @NotEmpty @QueryParam("To") String to,
                                  @NotEmpty @QueryParam("From") String username,
-                                 @NotEmpty @QueryParam("template") String template){
+                                 @NotEmpty @QueryParam("template") String template) {
         return envelopeService.saveOrUpdate(subject, to, username, template);
     }
 
     @GET
     @Timed
-    public EnvelopeState getEnvelopeStateById(@QueryParam("id") String id){
+    public EnvelopeState getEnvelopeStateById(@QueryParam("id") String id) {
         return envelopeService.getEnvelopeStateById(id);
     }
 }
