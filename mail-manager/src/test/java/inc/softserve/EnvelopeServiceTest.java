@@ -5,6 +5,7 @@ import inc.softserve.dao.EnvelopeDao;
 import inc.softserve.dao.UserDao;
 import inc.softserve.services.EnvelopeService;
 import inc.softserve.services.EnvelopeServiceImpl;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
@@ -19,18 +20,14 @@ import static org.mockito.Mockito.when;
 
 public class EnvelopeServiceTest extends Assert {
 
-    private EnvelopeService service;
-    @Mock
-    private UserDao usrDao;
-    @Mock
-    private EnvelopeDao envDao;
-    @Mock
-    private EnvelopeTools envTools;
+    @Mock private UserDao usrDao;
+    @Mock private EnvelopeDao envDao;
+    @Mock private EnvelopeTools envTools;
+    @InjectMocks private EnvelopeServiceImpl service;
 
     @BeforeClass
     public void setUpDataSource() throws Exception {
         MockitoAnnotations.initMocks(this);
-        service = new EnvelopeServiceImpl(envDao, usrDao, envTools);
     }
 
     @DataProvider(name = "saveOrUpdateData")

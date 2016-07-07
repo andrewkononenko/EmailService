@@ -5,6 +5,7 @@ import com.mongodb.CommandResult;
 import com.mongodb.DB;
 import inc.softserve.common.EnvelopeTools;
 import inc.softserve.dao.MongoManaged;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
@@ -21,19 +22,16 @@ import static org.mockito.Mockito.when;
 
 public class MailManagerHealthCheckTest extends Assert {
 
-    private MailManagerHealthCheck healthCheck;
-    @Mock
-    private EnvelopeTools envTools;
-    @Mock
-    private MongoManaged mongo;
-    @Mock
-    private DB dbMock;
+    @Mock private EnvelopeTools envTools;
+    @Mock private MongoManaged mongo;
+    @Mock private DB dbMock;
+    @InjectMocks private MailManagerHealthCheck healthCheck;
+
     private final String HEALTHY_ESP_MESSAGE = "{\"deadlocks\":{\"healthy\":true},\"health\":{\"healthy\":true}}";
 
     @BeforeClass
     public void setUpDataSource() throws Exception {
         MockitoAnnotations.initMocks(this);
-        this.healthCheck = new MailManagerHealthCheck("", "", envTools, mongo);
         when(mongo.getDb()).thenReturn(dbMock);
     }
 
