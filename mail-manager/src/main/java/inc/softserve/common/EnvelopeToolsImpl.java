@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
-public class EnvelopeToolsImpl implements EnvelopeTools{
+public class EnvelopeToolsImpl implements EnvelopeTools {
 
     private String sendEnvelopeServiceUrl;
     private String sendEnvelopeServicePath;
@@ -36,14 +36,14 @@ public class EnvelopeToolsImpl implements EnvelopeTools{
         String envelopeJson = mapper.writeValueAsString(envelope);
 
         Response sendEnvResponse = target.request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.entity(envelopeJson,MediaType.APPLICATION_JSON_TYPE));
+                .post(Entity.entity(envelopeJson, MediaType.APPLICATION_JSON_TYPE));
 
         String responseAsString = sendEnvResponse.readEntity(String.class);
-        EnvelopeState state = mapper.readValue(responseAsString,EnvelopeState.class);
+        EnvelopeState state = mapper.readValue(responseAsString, EnvelopeState.class);
         return state;
     }
 
-    public String sendGetRequest(String url, String path){
+    public String sendGetRequest(String url, String path) {
         WebTarget target = client.target(url).path(path);
         Response sendEnvResponse = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         String responseAsString = sendEnvResponse.readEntity(String.class);

@@ -15,12 +15,13 @@ public class EmailServiceApplication extends Application<EmailServiceConfigurati
     }
 
     @Override
-    public void initialize(Bootstrap<EmailServiceConfiguration> bootstrap) {}
+    public void initialize(Bootstrap<EmailServiceConfiguration> bootstrap) {
+    }
 
     @Override
     public void run(EmailServiceConfiguration configuration,
                     Environment environment) {
-        Injector injector  = Guice.createInjector(new EmailServiceModule(configuration));
+        Injector injector = Guice.createInjector(new EmailServiceModule(configuration));
         environment.jersey().register(injector.getInstance(EnvelopeResource.class));
         environment.healthChecks().register("health", injector.getInstance(MailManagerHealthCheck.class));
     }
