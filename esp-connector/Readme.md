@@ -1,6 +1,6 @@
-#Mail Manager
+#ESP Connector
 ##Overview
-esp-connector is a part of EmailService application, a stub service that talks to ESP.
+ESP Connector is a part of EmailService application, a stub service that talks to ESP.
 
 ##Local application run:
  - Requires mongodb and activemq services running, look parent Readme.md for instructions.
